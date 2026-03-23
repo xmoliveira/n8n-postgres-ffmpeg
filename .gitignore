@@ -1,0 +1,37 @@
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Docker
+postgres_data/
+n8n_data/
+backups/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Temporários
+*.tmp
+*.swp
+*.swo
+*~
+
+# Workflows exportados (mantém documentação)
+workflows_export_*.json
+
+# Banco de dados local
+*.sqlite3
+*.db
