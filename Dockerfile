@@ -1,23 +1,9 @@
-# Multi-stage build para n8n com PostgreSQL e FFmpeg 8.1
-# Base: Node.js Debian (porque n8nio/n8n é minimalista)
+# N8n latest com PostgreSQL support
+# FFmpeg será instalado no host/sistema separadamente
 
-FROM node:22-slim
+FROM n8nio/n8n:latest
 
-# Instalar dependências do sistema (Debian)
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    postgresql-client \
-    ffmpeg \
-    python3 \
-    python3-pip \
-    curl \
-    wget \
-    git \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copiar n8n installer (alternativa: usar npm install n8n)
-RUN npm install -g n8n
-
-# Configurar n8n com suporte PostgreSQL
+# Apenas configurações de n8n
 ENV DB_TYPE=postgresdb \
     DB_POSTGRESDB_HOST=postgres \
     DB_POSTGRESDB_PORT=5432 \
@@ -32,14 +18,6 @@ ENV DB_TYPE=postgresdb \
     TZ=Europe/Lisbon \
     NODE_ENV=production
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD curl -f http://localhost:5678/api/health || exit 1
-
-WORKDIR /home/node
-
 EXPOSE 5678
-
-USER node
 
 CMD ["n8n", "start"]
