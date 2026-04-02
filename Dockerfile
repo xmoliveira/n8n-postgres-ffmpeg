@@ -1,9 +1,17 @@
-# N8n latest com PostgreSQL support
-# FFmpeg será instalado no host/sistema separadamente
+# N8n latest com PostgreSQL + FFmpeg
 
 FROM n8nio/n8n:latest
 
-# Apenas configurações de n8n
+# Tentar instalar ffmpeg (assume que tem bash/sh)
+RUN if command -v apt-get &> /dev/null; then \
+      apt-get update && apt-get install -y ffmpeg && rm -rf /var/lib/apt/lists/*; \
+    elif command -v apk &> /dev/null; then \
+      apk add --no-cache ffmpeg; \
+    else \
+      echo "Aviso: Nenhum package manager encontrado"; \
+    fi
+
+# Configurar n8n
 ENV DB_TYPE=postgresdb \
     DB_POSTGRESDB_HOST=postgres \
     DB_POSTGRESDB_PORT=5432 \
