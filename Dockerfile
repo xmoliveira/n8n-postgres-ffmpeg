@@ -1,19 +1,18 @@
 # Multi-stage build para n8n com PostgreSQL e FFmpeg 8.1
-# Base: n8n 2.12.3
+# Base: n8n 2.12.3 (Alpine)
 
 FROM n8nio/n8n:2.12.3 AS base
 
-# Instalar dependências do sistema
-RUN apt-get update && apt-get install -y \
+# Instalar dependências do sistema (Alpine Linux)
+RUN apk add --no-cache \
     postgresql-client \
-    libpq-dev \
     ffmpeg \
     python3 \
-    python3-pip \
+    py3-pip \
     curl \
     wget \
     git \
-    && rm -rf /var/lib/apt/lists/*
+    bash
 
 # Configurar n8n com suporte PostgreSQL
 ENV DB_TYPE=postgresdb \
@@ -31,7 +30,7 @@ ENV DB_TYPE=postgresdb \
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD curl -f http://localhost:5678/api/health || exit 1
+    CMD wget -qO- http://localhost:5678/api/health || exit 1
 
 EXPOSE 5678
 
