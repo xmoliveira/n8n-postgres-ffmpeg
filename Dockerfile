@@ -1,7 +1,7 @@
 # Multi-stage build para n8n com PostgreSQL e FFmpeg 8.1
 # Base: n8n 2.12.3
 
-FROM n8n:2.12.3 as base
+FROM n8nio/n8n:2.12.3 AS base
 
 # Instalar dependências do sistema
 RUN apt-get update && apt-get install -y \
